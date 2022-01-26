@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from accounts import views
@@ -11,4 +12,10 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'),
          name='logout'),
     path('signup/', views.signup_page, name='signup'),
+    path('user/subscriptions/',
+         views.subscriptions_page,
+         name='subscriptions'),
+    path('user/unsubscribe/<int:followed_id>/',
+         views.subscriptions_page,
+         name='unsubscribe'),
 ]

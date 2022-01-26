@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% include 'partials/nav_bar.html' %}
+
+    <div class="container">
+        <h2>Suivre d'autres utilisateurs</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+        
+        <h2>Abonnements</h2>
+
+        <table class="table table-bordered">
+            <tbody>
+                {% for followed_user in followed_users %}
+                    <tr >
+                        <td class="w-75">{{ followed_user.username }}</th>
+                        <td ><a href="{% url 'unsubscribe' followed_user.id %}" class="btn btn-primary">Désabonner</a></th>
+                    </tr>            
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Abonnés</h2>
+
+        <table class="table table-bordered">
+            <tbody>
+                {% for follower in followers %}
+                    <tr >
+                        <td class="w-100">{{ follower.username }}</th>
+                    </tr>            
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}
