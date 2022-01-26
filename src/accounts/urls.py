@@ -1,7 +1,6 @@
-from re import template
-from django.shortcuts import redirect
 from django.urls import path
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
+from accounts import views
 
 urlpatterns = [
     path('', LoginView.as_view(
@@ -9,4 +8,7 @@ urlpatterns = [
         redirect_authenticated_user=True,
         ),
          name='login'),
+    path('logout/', LogoutView.as_view(next_page='login'),
+         name='logout'),
+    path('signup/', views.signup_page, name='signup'),
 ]

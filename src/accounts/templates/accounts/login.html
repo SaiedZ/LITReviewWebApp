@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-4  m-auto">
+                <form method="post">
+                    {{ form|crispy }}
+                    {% csrf_token %}
+                    <button type="submit" >Se connecter</button>
+                </form>
+                </br>    
+                <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
+        </div>
+        </div>
+    </div>
 
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Se connecter</button>
-    </form>
-
-    <p>Pas encore membre ? <a href="#">Inscrivez-vous maintenant !</a></p>
-
+    
 {% endblock content %}
