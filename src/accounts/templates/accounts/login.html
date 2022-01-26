@@ -9,11 +9,11 @@
                 <form method="post">
                     {{ form|crispy }}
                     {% csrf_token %}
-                    <button type="submit" >Se connecter</button>
+                    <button type="submit"class="btn btn-primary" >Se connecter</button>
                 </form>
                 </br>    
                 <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
-        </div>
+            </div>
         </div>
     </div>
 
