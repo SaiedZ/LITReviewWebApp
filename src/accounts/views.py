@@ -3,10 +3,8 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from django.conf import settings
 
-from accounts.models import UserFollows
-
+from .models import UserFollows
 from . import utils
 from . import forms
 
@@ -28,7 +26,6 @@ def signup_page(request):
     form = forms.SubscriptionForm()
 
     if request.method == 'POST':
-        print(request.POST)
         form = forms.SubscriptionForm(request.POST)
         print(form)
         if form.is_valid():
@@ -59,7 +56,7 @@ def subscriptions_page(request, followed_id=None):
             form.save()
             form = forms.SubscriptionForm(request.user)
 
-    followed_users = utils.get_followed_users(request.user)    
+    followed_users = utils.get_followed_users(request.user)
     followers = utils.get_followers_user(request.user)
 
     return render(request,
