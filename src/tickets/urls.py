@@ -5,5 +5,6 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('tickets/create/',
          views.TicketCreateView.as_view(),
-         name='tickets-create')
+         name='ticket-create'),
+    path('reviews/create/', views.create_review, name='review-create')
 ]

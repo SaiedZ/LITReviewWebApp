@@ -9,15 +9,19 @@
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <h2>Créer un ticket</h2>
+                <h2>Créer une critique</h2>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form|crispy }}
-                    <input type="submit" value="Save">
+                    <h2>Livre / Article</h2>
+                        {{ ticket_form|crispy }}                    
+                    <br><hr>
+                    <h2>Critique</h2>
+                        {{ review_form|crispy }}
+                    <button type="submit" class="btn btn-secondary">Envoyer</button>
                 </form>
             </div>
         </div>
