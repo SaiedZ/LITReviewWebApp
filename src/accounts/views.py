@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 from .models import UserFollows
 from . import utils
@@ -37,6 +38,7 @@ def signup_page(request):
                   context={'form': form})'''
 
 
+@login_required
 def subscriptions_page(request, followed_id=None):
     form = forms.SubscriptionForm(request.user)
 
@@ -63,4 +65,5 @@ def subscriptions_page(request, followed_id=None):
                   'accounts/subscriptions.html',
                   context={'form': form,
                            'followed_users': followed_users,
-                           'followers': followers})
+                           'followers': followers,
+                           'nbar': 'subscriptions'})

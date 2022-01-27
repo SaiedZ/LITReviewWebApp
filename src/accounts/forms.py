@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from accounts.utils import get_followed_users
 
 
-'''class SignupForm(UserCreationForm):
+class SignupForm(UserCreationForm):
     """
     A registration form with a username and email fields
     the password field is added by the parent class
@@ -17,7 +17,7 @@ from accounts.utils import get_followed_users
         fields = ['username', 'email']
 
 
-class SubscriptionForm(forms.ModelForm):
+'''class SubscriptionForm(forms.ModelForm):
     class Meta:
         model = UserFollows
         fields = ['user', 'followed_user']
