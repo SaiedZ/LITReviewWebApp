@@ -13,3 +13,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['headline', 'rating', 'body']
+        CHOICES = [(i, f"- {i}") for i in range(6)]
+        widgets = {
+            'rating': forms.RadioSelect(choices=CHOICES)
+            }

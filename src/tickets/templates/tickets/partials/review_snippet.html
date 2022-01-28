@@ -1,0 +1,19 @@
+<div class="d-flex justify-content-between">
+    {% if request.user == review.user %}
+        <p>Vous avez publié une critique</p>
+    {% else %}
+        <p>{{review.user.username }} a publié une critique</p>
+    {% endif %}
+    <p>{{ review.time_created }}</p>
+</div>
+
+<h5>{{ review.headline }}  -  {% include 'tickets/partials/rating_snippet.html' with rating=review.rating %}</h5>
+<p>{{ review.body }}</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col border">
+            {% include 'tickets/partials/ticket_snippet.html' with ticket=review.ticket %}
+        </div>
+    </div>
+</div>

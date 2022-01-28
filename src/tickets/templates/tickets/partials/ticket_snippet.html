@@ -1,0 +1,13 @@
+
+<div class="d-flex justify-content-between">
+    {% if request.user == ticket.user %}
+        <p>Vous avez publié un ticket</p>
+    {% else %}
+        <p>{{ticket.user.username }} a demandé une critique</p>
+    {% endif %}
+    <p>{{ ticket.time_created }}</p>
+</div>
+<h5>{{ ticket.title }}</h5>
+<p>{{ ticket.description }}</p>
+<p><img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" style="max-width: 200px;"></p>
+

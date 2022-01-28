@@ -1,10 +1,14 @@
+from typing import Any, Dict
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.db.models import CharField, Value
+from itertools import chain
+
 from tickets import forms
-from tickets.models import Ticket
+from tickets.models import Review, Ticket
 
 
 @login_required
@@ -13,12 +17,28 @@ def home(request):
     return render(request, 'tickets/home.html', context=context)
 
 
+@login_required
+def posts_user(request):
+    tickets = request.user.ticket_set.all()
+    tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.filter(user=request.user)
+    reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+
+    posts = sorted(
+        chain(reviews, tickets),
+        key=lambda post: post.time_created,
+        reverse=True)
+
+    context = {"posts": posts, 'nbar': 'posts'}
+    return render(request, 'tickets/my-posts.html', context=context)
+
+
 @method_decorator(login_required, name='dispatch')
 class TicketCreateView(CreateView):
 
     model = Ticket
     fields = ['title', 'description', 'image']
-    template_name = 'tickets/ticket-create.html'
+    template_name = 'tickets/ticket-create-update.html'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -29,6 +49,12 @@ class TicketCreateView(CreateView):
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Créer un ticket'
+        context['submit_text'] = 'Envoyer'
+        return context
 
 
 @login_required
@@ -62,3 +88,47 @@ def create_review(request):
     return render(request,
                   'tickets/review-create.html',
                   context=context)
+
+
+@method_decorator(login_required, name='dispatch')
+class TicketUpdateView(UpdateView):
+    model = Ticket
+    template_name = "tickets/ticket-create-update.html"
+    fields = ['title', 'description', 'image']
+
+    def get_success_url(self) -> str:
+        return reverse('my-posts')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Modifier votre ticket'
+        context['submit_text'] = 'Envoyer'
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class ReviewUpdateView(UpdateView):
+    model = Review
+    template_name = "tickets/review-update.html"
+    form_class = forms.ReviewForm
+
+    def get_success_url(self) -> str:
+        return reverse('my-posts')
+
+
+@method_decorator(login_required, name='dispatch')
+class TicketDeleteView(DeleteView):
+    model = Ticket
+    template_name = "tickets/review-ticket-delete.html"
+
+    def get_success_url(self) -> str:
+        return reverse('my-posts')
+
+
+@method_decorator(login_required, name='dispatch')
+class ReviewDeleteView(DeleteView):
+    model = Review
+    template_name = "tickets/review-ticket-delete.html"
+
+    def get_success_url(self) -> str:
+        return reverse('my-posts')

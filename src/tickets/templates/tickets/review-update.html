@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% include 'partials/nav_bar.html' %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2>Modifier votre critique</h2>
+            </div>
+        </div>
+        <div class="row border">
+            <div class="col">
+                <h5>Vous êtes en train de poster une réponse à </h5>
+                <div class="container">
+                    <div class="row border">
+                        <div class="col">
+                            {% include 'tickets/partials/ticket_snippet.html' with ticket=form.instance.ticket %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <div class="row border">
+            <div class="col-12">
+                <h5>Critique</h5>
+            <div class="col">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-secondary" value="Envoyer">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
