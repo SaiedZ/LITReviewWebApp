@@ -2,7 +2,7 @@ from django.urls import path
 from tickets import views
 
 urlpatterns = [
-    path('home/', views.home, name='home'),
+    path('home/', views.feed, name='home'),
     path('tickets/create/',
          views.TicketCreateView.as_view(),
          name='ticket-create'),
@@ -20,4 +20,7 @@ urlpatterns = [
     path('reviews/<pk>/delete/',
          views.ReviewDeleteView.as_view(),
          name='delete-review'),
+    path('tickets/<pk>/create-review/',
+         views.TicketReviewCreateView.as_view(),
+         name='ticket-create-review'),
 ]

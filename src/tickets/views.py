@@ -9,11 +9,23 @@ from itertools import chain
 
 from tickets import forms
 from tickets.models import Review, Ticket
+from tickets.utils import get_users_viewable_reviews, get_users_viewable_tickets
 
 
 @login_required
-def home(request):
-    context = {"user": request.user, 'nbar': 'home'}
+def feed(request):
+    reviews = get_users_viewable_reviews(request.user)
+    reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
+
+    tickets = get_users_viewable_tickets(request.user)
+    tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
+
+    posts = sorted(
+        chain(reviews, tickets),
+        key=lambda post: post.time_created,
+        reverse=True
+    )
+    context = {'nbar': 'home', 'posts': posts}
     return render(request, 'tickets/home.html', context=context)
 
 
@@ -45,7 +57,6 @@ class TicketCreateView(CreateView):
         '''
         set the user field of the ticket to the request.user before saving
         '''
-        print(self.request.user.is_authenticated)
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user
         return super().form_valid(form)
@@ -63,18 +74,12 @@ def create_review(request):
         ticket_form = forms.TicketForm(request.POST, request.FILES)
         review_form = forms.ReviewForm(request.POST)
         if all([ticket_form.is_valid(), review_form.is_valid()]):
-            ticket = ticket_form.save(commit=False)
-            ticket.user = request.user
-            ticket.save()
-            print(ticket, ticket.id)
-            review = review_form.save(commit=False)
-            review.ticket, review.user = ticket, request.user
-            review.save()
-            '''ticket_form.instance.user = request.user
+            ticket_form.instance.user = request.user
+            ticket_form.instance.answered = True
             ticket = ticket_form.save()
             review_form.instance.user = request.user
-            review_form.instance.ticket = ticket.pk
-            review_form.save()'''
+            review_form.instance.ticket = ticket
+            review_form.save()
             return redirect(reverse('home'))
     else:
         ticket_form = forms.TicketForm()
@@ -115,6 +120,11 @@ class ReviewUpdateView(UpdateView):
     def get_success_url(self) -> str:
         return reverse('my-posts')
 
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Modifier votre critique'
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class TicketDeleteView(DeleteView):
@@ -132,3 +142,40 @@ class ReviewDeleteView(DeleteView):
 
     def get_success_url(self) -> str:
         return reverse('my-posts')
+
+    def get_object(self, queryset=None):
+        """
+        Return the object the view is displaying after modifying
+        the answered attribut of the ticket to False
+        """
+        obj = super().get_object(queryset=None)
+        obj.ticket.answered = False
+        return obj
+
+
+@method_decorator(login_required, name='dispatch')
+class TicketReviewCreateView(CreateView):
+    model = Review
+    template_name = "tickets/review-update.html"
+    form_class = forms.ReviewForm
+
+    def get_success_url(self) -> str:
+        return reverse('home')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['form'].instance.ticket = Ticket.objects.get(
+            pk=self.kwargs['pk'])
+        context['page_title'] = 'Créer votre critique'
+        return context
+
+    def form_valid(self, form):
+        '''
+        set the ticket answered field to True before saving
+        '''
+        if self.request.user.is_authenticated:
+            form.instance.ticket = Ticket.objects.get(pk=self.kwargs['pk'])
+            form.instance.user = self.request.user
+            form.instance.ticket.answered = True
+            form.instance.ticket.save()
+        return super().form_valid(form)
