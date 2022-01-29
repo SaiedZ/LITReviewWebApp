@@ -10,7 +10,8 @@ from itertools import chain
 
 from tickets import forms
 from tickets.models import Review, Ticket
-from tickets.utils import get_users_viewable_reviews, get_users_viewable_tickets
+from tickets.utils import (get_users_viewable_reviews,
+                           get_users_viewable_tickets)
 
 
 @login_required

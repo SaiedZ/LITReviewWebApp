@@ -17,35 +17,8 @@ class SignupForm(UserCreationForm):
         fields = ['username', 'email']
 
 
-'''class SubscriptionForm(forms.ModelForm):
-    class Meta:
-        model = UserFollows
-        fields = ['user', 'followed_user']
-        labels = {'followed_user': 'Utilisateur à suivre :'}
-        exclude = ['user']
-        widgets = {'followed_user': forms.TextInput}'''
-
-
-'''class SubscriptionForm(forms.ModelForm):
-
-    username = forms.CharField(max_length=128, required=False)
-
-    'def __init__(self, user, *args, **kwargs):
-        """
-        Modify the initialization to receive the user
-        at the instantiation of the form.
-        """
-        super().__init__(*args, **kwargs)
-        self.fields['user'] = user
-
-    class Meta:
-        model = UserFollows
-        fields = ['user', 'username']
-        labels = {'followed_user': True}
-        widgets = {'followed_user': forms.TextInput}'''
-
-
 class SubscriptionForm(forms.Form):
+    """class to handle users subscriptions"""
 
     followed_user = forms.CharField(max_length=128,
                                     label=False)
@@ -85,3 +58,31 @@ class SubscriptionForm(forms.Form):
         user_follows.save()
 
         return user_follows
+
+
+'''class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = UserFollows
+        fields = ['user', 'followed_user']
+        labels = {'followed_user': 'Utilisateur à suivre :'}
+        exclude = ['user']
+        widgets = {'followed_user': forms.TextInput}'''
+
+
+'''class SubscriptionForm(forms.ModelForm):
+
+    username = forms.CharField(max_length=128, required=False)
+
+    'def __init__(self, user, *args, **kwargs):
+        """
+        Modify the initialization to receive the user
+        at the instantiation of the form.
+        """
+        super().__init__(*args, **kwargs)
+        self.fields['user'] = user
+
+    class Meta:
+        model = UserFollows
+        fields = ['user', 'username']
+        labels = {'followed_user': True}
+        widgets = {'followed_user': forms.TextInput}'''
