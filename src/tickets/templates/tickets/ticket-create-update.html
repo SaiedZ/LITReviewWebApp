@@ -6,6 +6,15 @@
 
     {% include 'partials/nav_bar.html' %}
 
+    {% if page_title == 'Modifier votre ticket' and form.instance.user != request.user %}
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h2>Oops ! Vous n'avez pas le droit d'accéder à cette page </h2>
+                </div>
+            </div>
+        </div>
+    {% else %}
     <div class="container">
         <div class="row">
             <div class="col text-center">
@@ -22,5 +31,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 {% endblock content %}

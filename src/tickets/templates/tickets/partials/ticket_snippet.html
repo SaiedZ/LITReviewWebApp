@@ -9,5 +9,7 @@
 </div>
 <h5>{{ ticket.title }}</h5>
 <p>{{ ticket.description }}</p>
+{% if ticket.image %}
 <p><img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" style="max-width: 200px;"></p>
+{% endif %}
 

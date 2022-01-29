@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -134,6 +135,17 @@ class TicketDeleteView(DeleteView):
     def get_success_url(self) -> str:
         return reverse('my-posts')
 
+    def get_object(self, queryset=None):
+        """
+        Return the object
+        if the user is not the creator raise Http404
+        """
+        obj = super().get_object(queryset=None)
+        if obj.user != self.request.user:
+            raise Http404(
+                "Oops ! Vous n'êtes pas autorisé à supprimer cet objet !")
+        return obj
+
 
 @method_decorator(login_required, name='dispatch')
 class ReviewDeleteView(DeleteView):
@@ -145,12 +157,23 @@ class ReviewDeleteView(DeleteView):
 
     def get_object(self, queryset=None):
         """
-        Return the object the view is displaying after modifying
-        the answered attribut of the ticket to False
+        Return the object the view is displaying
+        if the user is not the creator raise Http404
         """
         obj = super().get_object(queryset=None)
-        obj.ticket.answered = False
+        if obj.user != self.request.user:
+            raise Http404(
+                "Oops ! Vous n'êtes pas autorisé à supprimer cette objet !")
         return obj
+
+    def form_valid(self, form):
+        '''
+        Set the answered attribut of the ticket to False before saving
+        '''
+        if self.request.user.is_authenticated:
+            self.object.ticket.answered = False
+            self.object.ticket.save()
+        return super().form_valid(form)
 
 
 @method_decorator(login_required, name='dispatch')
