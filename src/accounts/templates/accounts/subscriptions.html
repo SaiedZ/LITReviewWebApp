@@ -20,7 +20,7 @@
                 {% for followed_user in followed_users %}
                     <tr >
                         <td class="w-75">{{ followed_user.username }}</th>
-                        <td ><a href="{% url 'unsubscribe' followed_user.id %}" class="btn btn-primary">Désabonner</a></th>
+                        <td class="text-center"><a href="{% url 'unsubscribe' followed_user.id %}" class="btn btn-primary">Désabonner</a></th>
                     </tr>            
                 {% endfor %}
             </tbody>
