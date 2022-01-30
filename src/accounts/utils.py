@@ -1,8 +1,8 @@
 from accounts.models import UserFollows
-from django.contrib.auth.models import User
 
 
 def get_followed_users(user):
+    """get the users folowed by the current user"""
     user_follows_objects = user.following.all()
     return [
         user_follows_object.followed_user
@@ -11,6 +11,7 @@ def get_followed_users(user):
 
 
 def get_followers_user(user):
+    """get the users folowing the current user"""
     user_followers_objects = UserFollows.objects.filter(followed_user=user)
     return [
         user_follower_object.user

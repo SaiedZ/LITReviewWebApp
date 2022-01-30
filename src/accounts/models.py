@@ -3,6 +3,8 @@ from django.conf import settings
 
 
 class UserFollows(models.Model):
+    """ The follows model, to establish the relation between users"""
+
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
