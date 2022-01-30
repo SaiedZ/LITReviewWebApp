@@ -21,10 +21,10 @@
                 <div class="d-flex justify-content-end my-2">
                     {% if post.content_type == 'TICKET' %}
                         <a href="{% url 'update-ticket' post.id %}" class="btn btn-secondary mr-2">Modifier</a>
-                        <a href="{% url 'delete-ticket' post.id %}" class="btn btn-secondary mr-2">Supprimer</a>
+                        <a href="{% url 'ticket-review-delete' post.content_type post.id %}" class="btn btn-secondary mr-2">Supprimer</a>
                     {% elif post.content_type == 'REVIEW' %}
                         <a href="{% url 'update-review' post.id %}" class="btn btn-secondary mr-2">Modifier</a>
-                        <a href="{% url 'delete-review' post.id %}" class="btn btn-secondary mr-2">Supprimer</a>
+                        <a href="{% url 'ticket-review-delete' post.content_type post.id %}" class="btn btn-secondary mr-2">Supprimer</a>
                     {% endif %}
                     
                 </div>

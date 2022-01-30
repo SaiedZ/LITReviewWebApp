@@ -4,7 +4,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView
+from django.shortcuts import get_object_or_404
 from django.db.models import CharField, Value
 from itertools import chain
 
@@ -70,6 +71,34 @@ class TicketCreateView(CreateView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
+class TicketReviewCreateView(CreateView):
+    model = Review
+    template_name = "tickets/review-update.html"
+    form_class = forms.ReviewForm
+
+    def get_success_url(self) -> str:
+        return reverse('home')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['form'].instance.ticket = Ticket.objects.get(
+            pk=self.kwargs['pk'])
+        context['page_title'] = 'Créer votre critique'
+        return context
+
+    def form_valid(self, form):
+        '''
+        set the ticket answered field to True before saving
+        '''
+        if self.request.user.is_authenticated:
+            form.instance.ticket = Ticket.objects.get(pk=self.kwargs['pk'])
+            form.instance.user = self.request.user
+            form.instance.ticket.answered = True
+            form.instance.ticket.save()
+        return super().form_valid(form)
+
+
 @login_required
 def create_review(request):
     if request.method == 'POST':
@@ -128,7 +157,34 @@ class ReviewUpdateView(UpdateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
+@login_required
+def delete_ticket_review(request, post_type, pk):
+
+    if post_type == 'TICKET':
+        Model = Ticket
+    elif post_type == 'REVIEW':
+        Model = Review
+    object = get_object_or_404(Model, pk=pk)
+
+    if object.user != request.user:
+        raise Http404(
+            "Oops ! Vous n'êtes pas autorisé à supprimer cette objet !")
+
+    if request.method == 'POST':
+        if post_type == 'REVIEW':
+            object.ticket.answered = False
+            object.ticket.save()
+        object.delete()
+        return redirect('my-posts')
+
+    return render(request,
+                  'tickets/review-ticket-delete.html',
+                  context={'object': object})
+
+
+# other way to handle the delete with DeleteView Class
+
+'''@method_decorator(login_required, name='dispatch')
 class TicketDeleteView(DeleteView):
     model = Ticket
     template_name = "tickets/review-ticket-delete.html"
@@ -168,38 +224,10 @@ class ReviewDeleteView(DeleteView):
         return obj
 
     def form_valid(self, form):
-        '''
+        """
         Set the answered attribut of the ticket to False before saving
-        '''
+        """
         if self.request.user.is_authenticated:
             self.object.ticket.answered = False
             self.object.ticket.save()
-        return super().form_valid(form)
-
-
-@method_decorator(login_required, name='dispatch')
-class TicketReviewCreateView(CreateView):
-    model = Review
-    template_name = "tickets/review-update.html"
-    form_class = forms.ReviewForm
-
-    def get_success_url(self) -> str:
-        return reverse('home')
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['form'].instance.ticket = Ticket.objects.get(
-            pk=self.kwargs['pk'])
-        context['page_title'] = 'Créer votre critique'
-        return context
-
-    def form_valid(self, form):
-        '''
-        set the ticket answered field to True before saving
-        '''
-        if self.request.user.is_authenticated:
-            form.instance.ticket = Ticket.objects.get(pk=self.kwargs['pk'])
-            form.instance.user = self.request.user
-            form.instance.ticket.answered = True
-            form.instance.ticket.save()
-        return super().form_valid(form)
+        return super().form_valid(form)'''
