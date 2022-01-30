@@ -20,6 +20,9 @@ class Ticket(models.Model):
     answered = models.BooleanField(default=False)
     time_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Le ticket '{self.title}"
+
 
 class Review(models.Model):
     """
@@ -38,3 +41,6 @@ class Review(models.Model):
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"La critique '{self.headline}"
