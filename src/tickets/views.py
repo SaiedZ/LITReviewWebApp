@@ -17,6 +17,12 @@ from tickets.utils import (get_users_viewable_reviews,
 
 @login_required
 def feed(request):
+    """
+    create a feed containing the latest tickets and comments
+    from users they follow as well as their own,
+    and also response to own tickets even from not followed users
+    listed in chronological order, most recent first
+    """
     reviews = get_users_viewable_reviews(request.user)
     reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
 
@@ -34,6 +40,10 @@ def feed(request):
 
 @login_required
 def posts_user(request):
+    """
+    create a feed containing tickets and reviews of the user
+    listed in chronological order
+    """
     tickets = request.user.ticket_set.all()
     tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
     reviews = Review.objects.filter(user=request.user)
@@ -50,6 +60,7 @@ def posts_user(request):
 
 @method_decorator(login_required, name='dispatch')
 class TicketCreateView(CreateView):
+    """Create tickets"""
 
     model = Ticket
     fields = ['title', 'description', 'image']
@@ -57,14 +68,18 @@ class TicketCreateView(CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        '''
+        """
         set the user field of the ticket to the request.user before saving
-        '''
+        """
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """
+        add page_title and submit_text to the context data
+        because the template is used for creation and update
+        """
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Créer un ticket'
         context['submit_text'] = 'Envoyer'
@@ -101,6 +116,10 @@ class TicketReviewCreateView(CreateView):
 
 @login_required
 def create_review(request):
+    """Create review
+    uses 2 forms to create a ticket and review
+    """
+
     if request.method == 'POST':
         ticket_form = forms.TicketForm(request.POST, request.FILES)
         review_form = forms.ReviewForm(request.POST)
@@ -128,6 +147,8 @@ def create_review(request):
 
 @method_decorator(login_required, name='dispatch')
 class TicketUpdateView(UpdateView):
+    """Update ticket"""
+
     model = Ticket
     template_name = "tickets/ticket-create-update.html"
     fields = ['title', 'description', 'image']
@@ -136,6 +157,10 @@ class TicketUpdateView(UpdateView):
         return reverse('my-posts')
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """
+        add page_title and submit_text to the context data
+        because the template is used for creation and update
+        """
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Modifier votre ticket'
         context['submit_text'] = 'Envoyer'
@@ -144,6 +169,8 @@ class TicketUpdateView(UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class ReviewUpdateView(UpdateView):
+    """Update ticket"""
+
     model = Review
     template_name = "tickets/review-update.html"
     form_class = forms.ReviewForm
@@ -159,6 +186,11 @@ class ReviewUpdateView(UpdateView):
 
 @login_required
 def delete_ticket_review(request, post_type, pk):
+    """
+    delete ticket or review ticket
+    depending on parametre and restrict the delete to the
+    creator of the object
+    """
 
     if post_type == 'TICKET':
         Model = Ticket

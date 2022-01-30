@@ -4,6 +4,13 @@ from django.db import models
 
 
 class Ticket(models.Model):
+    """
+    Ticket Model
+    with many to one relation with the User model
+    the answered field is used to determine if user can answer
+    or not a ticket. It's forbidden to review an already answered ticket
+    """
+
     title = models.CharField(max_length=128, verbose_name='titre')
     description = models.TextField(
         max_length=2048, blank=True, verbose_name='description')
@@ -15,6 +22,10 @@ class Ticket(models.Model):
 
 
 class Review(models.Model):
+    """
+    Review Model
+    with many to one relation with the User and Ticket models
+    """
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(
         # validates that rating must be between 0 and 5
