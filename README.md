@@ -6,16 +6,18 @@
 <br>
 <br>
 
-## 💿 Installer Django
+
+## 📖 What's it ?
+
+This repository hosts a project to achieve during my training OpenClassRooms.com
+This project was created on Django 4.0.1 using Python 3.10.0
+The purpose of this progam is to manage an offline chess tournament.
 
 
 
-## 📖 Créer un projet Django
+## 💿 How to setup the application ?
 
-
-## How to setup the application ?
-
-1. First, you will need to download [the source code](https://github.com/SaiedZ/application_centre_d_echec) from GitHub.
+1. First, you will need to download [the source code](https://github.com/SaiedZ/LITReviewWebApp.git) from GitHub.
 2. Unzip the folder
 3. Go to the unzipped folder using your terminal
 4. Create your virtual environment with the following command (here I call it .env, but you can call it another way)
@@ -23,26 +25,44 @@
 python -m venv .env
 ```
 6. Activate the virtual environment with the following command
-    * on Unix or Mac :
-```bash
-source env / bin / Activate
+ 
+  * on Unix or Mac :
+```shell
+ source .env/bin/Activate
 ```
-    * On Windows
+   * on Windows :
 ```bash
 env\Scripts\activate.bat
 ```
+
 7. Install the packages required to run the tool from the `requirements.txt` file
 ```bash
 pip install -r requirements.txt
 ```
-8. Execute the `main.py` file
+8. Now y can start the development server
 
 
 For more information, refer to the python.org documentation :
 
 [Virtual envirement tutorial](https://docs.python.org/3/tutorial/venv.html)
 
+
 ## ⚙️ Launch the development server
+
+First of all, you need to be located in the **src forlder**
+```bash
+.
+├── ./src
+│   ├── ./src/LITReviewWebApp
+│   ├── ./src/accounts
+│   ├── ./src/db.sqlite3
+│   ├── ./src/manage.py
+│   ├── ./src/media
+│   ├── ./src/requirements.txt
+│   ├── ./src/templates
+│   └── ./src/tickets
+└── ./users.xlsx
+```
 
 To launch the development server locally, just use the `runserver` command from the `manage.py` file:
 
@@ -55,22 +75,9 @@ Of course, you must first ensure that you have activated your virtual environmen
 Once the development server is launched, you can see your Django project's default home page at `127.0.0.1:8000` in a web browser.
 
 
-## What's it ?
-
-This repository hosts a project to achieve during my training OpenClassRooms.com
-This script was created on Python 3.9.5
-The purpose of this progam is to manage an offline chess tournament.
-
 ## What is its use?
 
-Create tournaments
-Continue ongoing tournaments
-Add players
-Generate reports
 
-This program use tinyDB and create a db.json file at the root and the Swiss Algorithm to create pairs.
-
-You can't delete players and tournaments,
 
 
 ## Use flake8 html
