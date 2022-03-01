@@ -53,18 +53,3 @@ def subscriptions_page(request, followed_id=None):
                            'followed_users': followed_users,
                            'followers': followers,
                            'nbar': 'subscriptions'})
-
-
-'''def subscriptions_page(request):
-    form = forms.SubscriptionForm()
-
-    if request.method == 'POST':
-        form = forms.SubscriptionForm(request.POST)
-        print(form)
-        if form.is_valid():
-            print('hello')
-            print(form.cleaned_data)
-        print('request mais pas valide !')
-    return render(request,
-                  'accounts/subscriptions.html',
-                  context={'form': form})'''
