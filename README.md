@@ -94,18 +94,22 @@ Once the development server is launched, you can see your Django project's defau
 
 
 ### login
+<hr>
 
 ![image](https://user-images.githubusercontent.com/90851774/151717963-f549289a-ffb4-4b12-9044-ebc0c41da925.png)
 
 ### Signup
+<hr>
 
 ![image](https://user-images.githubusercontent.com/90851774/151717987-98f03524-31c5-4db3-a015-fa5258c8005a.png)
 
 ### Home page (feed)
+<hr>
 
 ![image](https://user-images.githubusercontent.com/90851774/151718036-795d1f91-8443-49cd-9209-37a28422ff75.png)
 
 ### Subscriptions (relation between users)
+<hr>
 
 ![image](https://user-images.githubusercontent.com/90851774/151718109-74eac4bf-8e6d-4444-ac2b-7405fb084afc.png)
 
