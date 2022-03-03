@@ -37,7 +37,7 @@ User can also manage his subscriptions to other users and see those who are subs
 3. Go to the unzipped folder using your terminal
 4. You can also clone the repo without dowloading the folder. In this case, don't follow the steps above and just: use these commands:
 ```bash
-git clone git@github.com:OpenClassrooms-Student-Center/4425126-testing-python-django.git 
+git clone https://github.com/SaiedZ/LITReviewWebApp.git
 cd 4425126-testing-python-django
 ```
 5. Create your virtual environment with the following command (here I call it .env, but you can call it another way)
