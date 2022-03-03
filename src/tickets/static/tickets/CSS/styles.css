@@ -2,3 +2,22 @@
     display: inline-block;
     margin-right: 1rem
 }
+html {
+    height: 100%;
+    width: 100%;
+ }
+ 
+body {
+    min-height: 100%;
+    width: 100%;
+ }
+
+.minh-100 {
+    min-height: 100%;
+    width: 100%;
+ }
+
+.fill { 
+    min-height: 100%;
+    height: 100%;
+}
