@@ -55,11 +55,17 @@ python -m venv .env
 env\Scripts\activate.bat
 ```
 
-7. Install the packages required to run the tool from the `requirements.txt` file
+7. Move to src folder
+```bash
+cd src
+```
+
+8. Install the packages required to run the tool from the `requirements.txt` file
 ```bash
 pip install -r requirements.txt
 ```
-8. Now y can start the development server
+
+9. Now y can start the development server
 
 
 For more information, refer to the python.org documentation :
