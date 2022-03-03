@@ -35,7 +35,7 @@ User can also manage his subscriptions to other users and see those who are subs
 1. First, you will need to download [the source code](https://github.com/SaiedZ/LITReviewWebApp.git) from GitHub.
 2. Unzip the folder
 3. Go to the unzipped folder using your terminal
-4. You can also clone the repo without dowloading the folder. In this case, don't follow the steps above and just: use these commands:
+4. You can also clone the repo without dowloading the folder. In this case, don't follow the steps above and just: use these commands (git must be installed):
 ```bash
 git clone https://github.com/SaiedZ/LITReviewWebApp.git
 cd 4425126-testing-python-django
