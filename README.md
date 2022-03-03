@@ -35,7 +35,12 @@ User can also manage his subscriptions to other users and see those who are subs
 1. First, you will need to download [the source code](https://github.com/SaiedZ/LITReviewWebApp.git) from GitHub.
 2. Unzip the folder
 3. Go to the unzipped folder using your terminal
-4. Create your virtual environment with the following command (here I call it .env, but you can call it another way)
+4. You can also clone the repo without dowloading the folder. In this case, don't follow the steps above and just: use these commands (git must be installed):
+```bash
+git clone https://github.com/SaiedZ/LITReviewWebApp.git
+cd LITReviewWebApp
+```
+5. Create your virtual environment with the following command (here I call it .env, but you can call it another way)
 ```bash
 python -m venv .env
 ```
