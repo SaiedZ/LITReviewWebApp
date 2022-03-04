@@ -52,7 +52,7 @@ python -m venv .env
 ```
    * on Windows :
 ```bash
-env\Scripts\activate.bat
+.env\Scripts\activate.bat
 ```
 
 7. Move to src folder
