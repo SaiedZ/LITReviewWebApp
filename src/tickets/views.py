@@ -88,6 +88,9 @@ class TicketCreateView(CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class TicketReviewCreateView(CreateView):
+    """
+    Create a review as an answer to a ticket.
+    """
     model = Review
     template_name = "tickets/review-update.html"
     form_class = forms.ReviewForm
@@ -103,9 +106,9 @@ class TicketReviewCreateView(CreateView):
         return context
 
     def form_valid(self, form):
-        '''
+        """
         set the ticket answered field to True before saving
-        '''
+        """
         if self.request.user.is_authenticated:
             form.instance.ticket = Ticket.objects.get(pk=self.kwargs['pk'])
             form.instance.user = self.request.user
@@ -169,7 +172,7 @@ class TicketUpdateView(UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class ReviewUpdateView(UpdateView):
-    """Update ticket"""
+    """Update Review"""
 
     model = Review
     template_name = "tickets/review-update.html"
