@@ -98,7 +98,7 @@ python manage.py runserver
 
 Of course, you must first ensure that you have activated your virtual environment and that you are in the folder that contains the `manage.py` file.
 
-Once the development server is launched, you can see Django project's home page at `127.0.0.1:8000` in a web browser.
+Once the development server is launched, you can see the home page at `127.0.0.1:8000` in a web browser.
 
 
 ## Some screenshots
